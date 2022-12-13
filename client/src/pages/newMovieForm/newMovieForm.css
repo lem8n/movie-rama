@@ -1,0 +1,12 @@
+.newMovieBox {
+    display: flex;
+    position: relative;
+    justify-content: center;
+    margin-top: 20px;
+    left: 10%;
+    width: 80%;
+}
+
+.newMovieInput {
+    width: 450px;
+}

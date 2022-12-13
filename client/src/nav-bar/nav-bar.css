@@ -1,0 +1,51 @@
+.navbar {
+    background: #fff;
+    display: flex;
+    justify-content: space-between;
+}
+
+.logoButton {
+    float: left!important;
+    background: none !important;
+}
+
+.logo {
+    height: 50px;
+}
+
+.navButton {
+    color: #a00000!important;
+    font-weight: bold !important;
+    font-size: 20px !important;
+    margin-right: 4px !important;
+}
+
+.navButton:hover {
+    background: #a00000!important;
+    color: #fff!important;
+}
+
+.navLogOut {
+    color: #a00000!important;
+    font-weight: bold !important;
+    font-size: 15px !important;
+    margin-left: 4px !important;
+}
+
+.navLogOut:hover {
+    background: #a00000!important;
+    color: #fff!important;
+}
+
+.user {
+    color: #3b0909;
+    font-size: 13px;
+    margin-left: 2px;
+}
+
+.user:hover {
+    color: #000000;
+    cursor: pointer;
+    text-decoration: underline;
+    font-size: 14px;
+}

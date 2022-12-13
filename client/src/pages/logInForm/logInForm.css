@@ -1,0 +1,22 @@
+.loginBox {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	height: 90%;
+}
+
+.loginForm {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	height: 450px;
+	width: 600px;
+	border-radius: 10px;
+	box-shadow: 10px 10px 20px;
+	background: white;
+
+}
+
+.loginButton {
+	margin-top: 15px !important;
+}

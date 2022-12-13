@@ -1,0 +1,42 @@
+.movie-title{
+    font-weight: bold!important;
+}
+
+.movie-item {
+    display: flex;
+    position: relative;
+    background: rgba(255, 255, 255, 0.8);
+    border-radius: 10px;
+}
+
+.movie-card {
+    height: 200px;
+    box-shadow: none!important;
+    background: none!important;
+}
+
+.card-buttons {
+    position: absolute;
+    bottom: 0;
+}
+
+.likeDislikeCount {
+    margin-left: -5px!important;
+    font-size: 20px;
+}
+
+.likeButton:active {
+   color: #1b9ac7;
+}
+
+.activeLikeButton {
+    color: #1b9ac7!important;
+}
+
+.dislikeButton:active {
+    color: #a00000;
+}
+
+.activeDislikeButton {
+    color: #a00000!important;
+}

@@ -1,0 +1,28 @@
+.addButtonContainer {
+    display: flex;
+    position: relative;
+    justify-content: center;
+    margin-top: 20px;
+    left: 10%;
+    width: 80%;
+}
+
+.stack-container {
+    position: relative;
+    margin-top: 20px;
+    left: 10%;
+    width: 80%;
+}
+
+.newMovie {
+    color: #a00000 !important;
+    font-weight: bold !important;
+    font-size: 20px !important;
+    width: 40%;
+    margin-right: 4px !important;
+}
+
+.newMovie:hover {
+    background: #a00000!important;
+    color: #fff!important;
+}
