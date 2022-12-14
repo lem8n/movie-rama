@@ -40,7 +40,6 @@ const validateToken = (req, res) => {
 
   jwt.verify(token, process.env.TOKEN_SECRET, (error, user) => {
     if (error) {
-      console.log(error);
       return res.status(403).json({ message: "Forbidden" });
     }
     return res.json(user);
