@@ -37,31 +37,6 @@ const findById = async (request, response) => {
   }
 };
 
-const updateUser = async (request, response) => {
-  const filter = { _id: "6367e9ea04e7eb1a640e8402" }; // mono gia na vrw ena xristi
-  const updateValue = request.body;
-  console.log(updateValue);
-  try {
-    if (Object.keys(updateValue).length === 0) {
-      response.status(400).json({ error: "no input" });
-      return;
-    }
-    if (Object.keys(updateValue).length > 1) {
-      response
-        .status(400)
-        .json({ message: "You can only update one value at a time" });
-      return;
-    }
-    const updatedUser = await User.findOneAndUpdate(filter, updateValue, {
-      new: true,
-    });
-    response.json(`Username ${updatedUser.username} updated successfully`);
-  } catch (error) {
-    console.log(error);
-    response.status(400).json({ error: "User's username not updated" });
-  }
-};
-
 const logIn = async (request, response) => {
   const userInput = request.body;
   let wrongBody = false;
@@ -116,6 +91,5 @@ module.exports = {
   signUp,
   logOut,
   findById,
-  updateUser,
   logIn,
 };

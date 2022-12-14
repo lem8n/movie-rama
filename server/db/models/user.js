@@ -15,7 +15,6 @@ const userSchema = new mongoose.Schema(
       required: true,
       type: String,
     },
-    moviesPosted: [{ type: mongoose.Schema.Types.ObjectId, ref: "Movies" }],
   },
   {
     timestamps: true,
