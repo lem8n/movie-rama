@@ -26,21 +26,21 @@ A social sharing platform where users can share their favorite movies. Each movi
           - /findAll (GET)
           - /addNew (POST) ~ authenticationRequired
           - /updateMovie/:_id (PUT) ~ authenticationRequired
-        - For user Authentication purposes I have used the following
-          - jwt token
-          - User gets authenticated by apending a (limited-time) jwt cookie to his requests when logs in
-          - Token gets removed when user logs out
-          - .env file contains the TOKEN_SECRET
-        - Database:
-          - MongoDB
-          - You can see the collection schema models on server/db/models
-          - mongoose for handling DB queries
-          - .env file contains the DB_URL
-        - There are three main routes you can append to main client url to see the equivalent pages:
-          - '/' ~ Home page 
-          - '/log-in' ~ User log in
-          - 'new-movie' ~ Add new movie
-          - '/sign-up' ~ User sign up
+    - For user Authentication purposes I have used the following
+      - jwt token
+      - User gets authenticated by apending a (limited-time) jwt cookie to his requests when logs in
+      - Token gets removed when user logs out
+      - .env file contains the TOKEN_SECRET
+    - Database:
+      - MongoDB
+      - You can see the collection schema models on server/db/models
+      - mongoose for handling DB queries
+      - .env file contains the DB_URL
+    - There are three main routes you can append to main client url to see the equivalent pages:
+      - '/' ~ Home page 
+      - '/log-in' ~ User log in
+      - 'new-movie' ~ Add new movie
+      - '/sign-up' ~ User sign up
       
 3. Technologies and Libraries Used
     - React ( and 'react-router-dom')
