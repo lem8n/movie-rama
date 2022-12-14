@@ -1,16 +1,19 @@
 import './newMovieForm.css';
-import { Button, FormControl, TextField } from '@mui/material';
+import { Button, FormControl, FormHelperText, TextField } from '@mui/material';
 import { useState } from 'react';
 import { addNewMovie } from '../../api/movies';
 import { useNavigate } from 'react-router-dom';
+import { useAlert } from 'react-alert';
 
 export const NewMovieForm = ({
-	allMovies,
+	fetchedMovies,
 	signedInUser,
-	setIsLoading,
-	setAllMovies,
+	totalMovieNumber,
+	setIsNewMovie,
+	setPage,
 }) => {
 	const navigate = useNavigate();
+	const alert = useAlert();
 	const [isFieldEmpty, setIsFieldEmpty] = useState(true);
 	const [movie, setMovie] = useState({
 		title: '',
@@ -23,7 +26,7 @@ export const NewMovieForm = ({
 	const [duplicateTitle, setDuplicateTitle] = useState(false);
 
 	const duplicateCheck = (newMovie) => {
-		const duplicateTitleExists = allMovies.some(
+		const duplicateTitleExists = fetchedMovies.some(
 			(movie) => movie.title === newMovie.title
 		);
 
@@ -64,10 +67,12 @@ export const NewMovieForm = ({
 		try {
 			const mve = await addNewMovie(movie);
 			if (mve) {
-				alert('Sign Up Success');
-				setAllMovies([...allMovies, mve.data]);
-				setIsLoading(true);
-				navigate('/');
+				const newTotalMovieNumber = totalMovieNumber + 1;
+				setPage(Math.ceil(newTotalMovieNumber / 10));
+				setIsNewMovie(true);
+				alert.success(`${movie.title} successfully added`, {
+					timeout: 2000,
+				});
 			}
 		} catch (error) {
 			console.log(error);
@@ -80,7 +85,6 @@ export const NewMovieForm = ({
 				onSubmit={(event) => {
 					submitMovie();
 					navigate('/');
-					event.preventDefault();
 				}}
 			>
 				<FormControl className="newMovieInput">
@@ -94,6 +98,9 @@ export const NewMovieForm = ({
 						variant="outlined"
 						required
 					/>
+					{duplicateTitle && (
+						<FormHelperText error>This Movie already exists</FormHelperText>
+					)}
 					<TextField
 						id="description"
 						color="warning"
@@ -110,7 +117,7 @@ export const NewMovieForm = ({
 						color="success"
 						variant="contained"
 						style={{ marginTop: '10px' }}
-						disabled={isFieldEmpty}
+						disabled={isFieldEmpty || duplicateTitle}
 					>
 						Submit new movie
 					</Button>

@@ -2,8 +2,52 @@ const Movie = require("../db/models/movie");
 
 const findAll = async (request, response) => {
   try {
-    const movies = await Movie.find();
-    response.json(movies);
+    const page = request.query.page;
+    const sortedBy = request.query.sortedBy;
+    const sortedValue = request.query.sortedValue;
+    let totalMovies = await Movie.count();
+
+    let movies;
+    switch (sortedBy) {
+      case "all":
+        movies = await Movie.find()
+          .skip((page - 1) * 10)
+          .limit(10);
+        break;
+      case "user":
+        totalMovies = await Movie.count({ "postedBy._id": sortedValue });
+        movies = await Movie.find({ "postedBy._id": sortedValue })
+          .skip((page - 1) * 10)
+          .limit(10);
+        break;
+      case "dateAdded":
+        movies = await Movie.find()
+          .sort({ createdAt: -1 })
+          .skip((page - 1) * 10)
+          .limit(10);
+        break;
+      case "likes":
+        movies = await Movie.aggregate([
+          { $addFields: { likesCount: { $size: "$likedBy" } } },
+          { $sort: { likesCount: -1 } },
+        ])
+          .skip((page - 1) * 10)
+          .limit(10);
+        break;
+      case "dislikes":
+        movies = await Movie.aggregate([
+          { $addFields: { dislikesCount: { $size: "$hatedBy" } } },
+          { $sort: { dislikesCount: -1 } },
+        ])
+          .skip((page - 1) * 10)
+          .limit(10);
+        break;
+    }
+
+    response.json({
+      movies,
+      totalMovies: totalMovies,
+    });
   } catch (error) {
     response.status(500).json({ error: error.message });
   }
@@ -43,15 +87,6 @@ const addNewMovie = async (request, response) => {
     return response.status(500).json({ error: error.message });
   }
 };
-
-// const findById = async (request, response) => {
-//   try {
-//     const userFind = await User.findOne(request.params);
-//     response.json(userFind);
-//   } catch (error) {
-//     response.status(404).json({ message: "User not found" });
-//   }
-// };
 
 const updateMovie = async (request, response) => {
   const movieId = request.params;

@@ -8,10 +8,17 @@ import { ThumbUp, ThumbDown } from '@mui/icons-material';
 const moment = require('moment');
 
 export const MovieListItem = ({
-	allMovies,
+	fetchedMovies,
+	setFetchedMovies,
+	isLoading,
 	setIsLoading,
 	signedInUser,
 	isLoggedIn,
+	sorted,
+	setSortedBy,
+	page,
+	setPage,
+	setSortedValue,
 }) => {
 	const [moviesList, setMoviesList] = useState([{}]);
 	const [likesPerMovie, setLikesPerMovie] = useState({});
@@ -30,7 +37,7 @@ export const MovieListItem = ({
 		let dislikes = {};
 		let userLikes = {};
 		let userDislikes = {};
-		allMovies.map((movie) => {
+		fetchedMovies.map((movie) => {
 			likes = { ...likes, [movie.title]: movie.likedBy.length };
 			dislikes = { ...dislikes, [movie.title]: movie.hatedBy.length };
 			findById(movie.postedBy._id)
@@ -64,10 +71,10 @@ export const MovieListItem = ({
 		setHasUserDislikeIt(userDislikes);
 		setIsLoading(true);
 		setTimeout(() => {
-			setMoviesList(allMovies);
+			setMoviesList(fetchedMovies);
 			setIsLoading(false);
 		}, 1000);
-	}, [allMovies, moviesList, signedInUser._id, setIsLoading, isLoggedIn]);
+	}, [fetchedMovies, sorted, signedInUser._id, setIsLoading, isLoggedIn]);
 
 	const handleLike = async (movie) => {
 		if (!isLoggedIn) {
@@ -178,7 +185,22 @@ export const MovieListItem = ({
 									sx={{ marginBottom: '5px' }}
 								>
 									<span style={{ color: '#000000' }}>Posted by </span>
-									{' ' + result.postedBy.fullName + ' ' + result.timeAgoPosted}
+									<span
+										className="postedBy"
+										onClick={() => {
+											window.scrollTo({ top: 0, behavior: 'smooth' });
+											if (page !== 1) {
+												setPage(1);
+											}
+											setSortedBy('user');
+											setSortedValue(result.postedBy._id);
+										}}
+									>
+										{result.postedBy.fullName}
+									</span>
+									<span style={{ color: '#4d0505' }}>
+										{' ' + result.timeAgoPosted}
+									</span>
 								</Typography>
 								<Typography variant="body3" color="text.secondary">
 									{result.description}
@@ -195,7 +217,9 @@ export const MovieListItem = ({
 											: 'activeLikeButton'
 									}
 									onClick={() => handleLike(result)}
-									disabled={!isLoggedIn}
+									disabled={
+										!isLoggedIn || result.postedBy._id === signedInUser._id
+									}
 								>
 									<ThumbUp />
 								</IconButton>
@@ -212,7 +236,9 @@ export const MovieListItem = ({
 											: 'activeDislikeButton'
 									}
 									onClick={() => handleDislike(result)}
-									disabled={!isLoggedIn}
+									disabled={
+										!isLoggedIn || result.postedBy._id === signedInUser._id
+									}
 								>
 									<ThumbDown />
 								</IconButton>

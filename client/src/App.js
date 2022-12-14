@@ -14,15 +14,23 @@ import { validateToken } from './api/users';
 const App = () => {
 	const [signedInUser, setSignedInUser] = useState({});
 	const [isLoggedIn, setIsLoggedIn] = useState(false);
-	const [allMovies, setAllMovies] = useState([{}]);
+	const [fetchedMovies, setFetchedMovies] = useState([{}]);
 	const [isLoading, setIsLoading] = useState(false);
+	const [totalPages, setTotalPages] = useState(0);
+	const [totalMovieNumber, setTotalMovieNumber] = useState(0);
+	const [page, setPage] = useState(1);
+	const [sortedBy, setSortedBy] = useState('all');
+	const [sortedValue, setSortedValue] = useState('');
+	const [isNewMovie, setIsNewMovie] = useState(false);
 
 	useEffect(() => {
-		// If allUsers is populated don't run it again
-		findAll()
-			.then((movies) => {
-				if (movies && movies.data) {
-					setAllMovies(movies.data);
+		console.log(page);
+		findAll(page, sortedBy, sortedValue)
+			.then((result) => {
+				if (result) {
+					setFetchedMovies(result.movies);
+					setTotalMovieNumber(result.totalMovies);
+					setTotalPages(Math.ceil(result.totalMovies / 10));
 				}
 			})
 			.catch((error) => {
@@ -39,14 +47,15 @@ const App = () => {
 			.catch((error) => {
 				console.log(error);
 			});
-	}, []);
+		setIsNewMovie(false);
+	}, [page, sortedBy, sortedValue, isNewMovie]);
 
 	// TODO: Cookie validity request, create endpoint so if a cookie exists and it's active keep the user logged in
 
 	return (
 		<ThemeProvider theme={appTheme}>
 			<CssBaseline enableColorScheme />
-			{Object.keys(allMovies[0]).length > 0 && (
+			{Object.keys(fetchedMovies[0]).length > 0 && (
 				<div className="App">
 					<Router>
 						<NavBar
@@ -55,6 +64,10 @@ const App = () => {
 							signedInUser={signedInUser}
 							setSignedInUser={setSignedInUser}
 							setIsLoading={setIsLoading}
+							setSortedBy={setSortedBy}
+							setSortedValue={setSortedValue}
+							page={page}
+							setPage={setPage}
 						/>
 						<Routes>
 							<Route
@@ -64,10 +77,18 @@ const App = () => {
 									<Home
 										isLoggedIn={isLoggedIn}
 										signedInUser={signedInUser}
-										allMovies={allMovies}
-										setAllMovies={setAllMovies}
+										fetchedMovies={fetchedMovies}
+										setFetchedMovies={setFetchedMovies}
 										isLoading={isLoading}
 										setIsLoading={setIsLoading}
+										sortedBy={sortedBy}
+										setSortedBy={setSortedBy}
+										setSortedValue={setSortedValue}
+										sortedValue={sortedValue}
+										page={page}
+										setPage={setPage}
+										totalPages={totalPages}
+										setTotalPages={setTotalPages}
 									/>
 								}
 							></Route>
@@ -88,10 +109,11 @@ const App = () => {
 								path="/new-movie"
 								element={
 									<NewMovieForm
-										allMovies={allMovies}
-										setAllMovies={setAllMovies}
+										fetchedMovies={fetchedMovies}
 										signedInUser={signedInUser}
-										setIsLoading={setIsLoading}
+										setPage={setPage}
+										setIsNewMovie={setIsNewMovie}
+										totalMovieNumber={totalMovieNumber}
 									/>
 								}
 							></Route>

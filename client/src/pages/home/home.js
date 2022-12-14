@@ -1,17 +1,28 @@
 import './home.css';
-import { Button, CircularProgress, PaginationItem, Stack } from '@mui/material';
+import { Button, CircularProgress, Stack } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import { MovieListItem } from './movie-list-item/movie-list-item';
+import { PaginationItem } from './pagination/pagination';
+import { Filters } from './filters/filters';
 
 export const Home = ({
-	allMovies,
-	setAllMovies,
+	fetchedMovies,
+	setFetchedMovies,
 	isLoggedIn,
 	signedInUser,
 	isLoading,
 	setIsLoading,
+	sortedBy,
+	setSortedBy,
+	setSortedValue,
+	sortedValue,
+	page,
+	setPage,
+	totalPages,
+	setTotalPages,
 }) => {
 	const navigate = useNavigate();
+
 	return (
 		<div>
 			<div className="addButtonContainer">
@@ -24,35 +35,45 @@ export const Home = ({
 						</Button>
 					)
 				)}
-				{/*<PaginationItem*/}
-				{/*// totalPages={totalPages}*/}
-				{/*// page={page}*/}
-				{/*// setPage={setPage}*/}
-				{/*// setSearchResult={setSearchResult}*/}
-				{/*// searchPhrase={searchPhrase}*/}
-				{/*/>*/}
 			</div>
-
+			<PaginationItem
+				totalPages={totalPages}
+				page={page}
+				setPage={setPage}
+				sortedBy={sortedBy}
+				sortedValue={sortedValue}
+				setFetchedMovies={setFetchedMovies}
+				setTotalPages={setTotalPages}
+			/>
 			<Stack spacing={2} className="stack-container">
+				<Filters
+					setFetchedMovies={setFetchedMovies}
+					setSortedBy={setSortedBy}
+					setPage={setPage}
+					page={page}
+				/>
 				<MovieListItem
-					allMovies={allMovies}
+					fetchedMovies={fetchedMovies}
 					isLoggedIn={isLoggedIn}
-					setAllMovies={setAllMovies}
+					setFetchedMovies={setFetchedMovies}
 					signedInUser={signedInUser}
+					isLoading={isLoading}
+					setPage={setPage}
 					setIsLoading={setIsLoading}
-					// searchPhrase={searchPhrase}
-					// searchResult={searchResult}
-					// searchHappened={searchHappened}
+					setSortedBy={setSortedBy}
+					setSortedValue={setSortedValue}
 				/>
 			</Stack>
 
-			{/*<PaginationItem*/}
-			{/*// totalPages={totalPages}*/}
-			{/*// page={page}*/}
-			{/*// setPage={setPage}*/}
-			{/*// setSearchResult={setSearchResult}*/}
-			{/*// searchPhrase={searchPhrase}*/}
-			{/*/>*/}
+			<PaginationItem
+				totalPages={totalPages}
+				page={page}
+				setPage={setPage}
+				sortedBy={sortedBy}
+				sortedValue={sortedValue}
+				setFetchedMovies={setFetchedMovies}
+				setTotalPages={setTotalPages}
+			/>
 		</div>
 	);
 };

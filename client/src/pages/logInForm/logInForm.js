@@ -1,8 +1,9 @@
-import { TextField, Button, FormControl, FormHelperText } from '@mui/material';
+import { TextField, Button, FormControl } from '@mui/material';
 import './logInForm.css';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { logIn } from '../../api/users';
 import { useNavigate } from 'react-router-dom';
+import { useAlert } from 'react-alert';
 
 export const LogInInForm = ({
 	setIsLoggedIn,
@@ -10,6 +11,7 @@ export const LogInInForm = ({
 	setIsLoading,
 }) => {
 	const navigate = useNavigate();
+	const alert = useAlert();
 	const [user, setUser] = useState({
 		email: '',
 		password: '',
@@ -59,7 +61,9 @@ export const LogInInForm = ({
 				setWrongLogin(false);
 				setIsLoggedIn(true);
 				setSignedInUser(userLogIn.data.user);
-				alert('Sign Up Success');
+				alert.success('You are now logged in', {
+					timeout: 2000,
+				});
 				setIsLoading(true);
 				navigate('/');
 			}
@@ -120,10 +124,16 @@ export const LogInInForm = ({
 						Sign In
 					</Button>
 					<small
-						style={{ fontSize: '11px', textAlign: 'center', marginTop: '3px' }}
+						style={{
+							fontSize: '11px',
+							textAlign: 'center',
+							marginTop: '3px',
+						}}
 					>
 						If you don't have an account{' '}
-						<a style={{ color: 'blue' }}>Sign Up</a>
+						<a style={{ color: 'blue' }} href="/sign-up">
+							Sign Up
+						</a>
 					</small>
 				</FormControl>
 			</form>

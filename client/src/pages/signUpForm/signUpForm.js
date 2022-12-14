@@ -3,9 +3,11 @@ import '../logInForm/logInForm.css';
 import { useEffect, useState } from 'react';
 import { findAll, signUp } from '../../api/users';
 import { useNavigate } from 'react-router-dom';
+import { useAlert } from 'react-alert';
 
 const SignUpForm = () => {
 	const navigate = useNavigate();
+	const alert = useAlert();
 	const [user, setUser] = useState({
 		email: '',
 		fullName: '',
@@ -81,7 +83,9 @@ const SignUpForm = () => {
 		try {
 			const usr = await signUp(user);
 			if (usr) {
-				alert('Sign Up Success');
+				alert.success('Signed up successfully', {
+					timeout: 2000,
+				});
 				navigate('/log-in');
 			}
 		} catch (error) {
@@ -147,7 +151,7 @@ const SignUpForm = () => {
 						style={{ fontSize: '11px', textAlign: 'center', marginTop: '3px' }}
 					>
 						If you already have an account{' '}
-						<a href="/sign-in" style={{ color: 'blue' }}>
+						<a href="/log-in" style={{ color: 'blue' }}>
 							Sign In
 						</a>
 					</small>

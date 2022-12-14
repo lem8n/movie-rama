@@ -1,24 +1,26 @@
 import { Pagination } from '@mui/material';
 import './pagination.css';
-import { searchMovies } from '../../../api/tmdb';
-import { useNavigate } from 'react-router-dom';
+import { findAll } from '../../../api/movies';
 
 export const PaginationItem = ({
 	totalPages,
 	page,
 	setPage,
-	setSearchResult,
-	searchPhrase,
+	sortedBy,
+	sortedValue,
+	setFetchedMovies,
+	setTotalPages,
 }) => {
-	const navigate = useNavigate();
 	const handlePageChange = async (pageToGo) => {
+		if (page === pageToGo) {
+			return;
+		}
 		try {
-			const movies = await searchMovies(searchPhrase, pageToGo);
-			window.scroll(0, 0);
-			if (movies) {
+			const result = await findAll(pageToGo, sortedBy, sortedValue);
+			if (result) {
 				setPage(pageToGo);
-				setSearchResult(movies.data.results);
-				navigate(`/movies?query=${searchPhrase}&page=${pageToGo}`);
+				setFetchedMovies(result.movies);
+				setTotalPages(Math.ceil(result.totalMovies / 10));
 			}
 		} catch (error) {
 			console.log(error);
@@ -28,9 +30,7 @@ export const PaginationItem = ({
 	return (
 		<Pagination
 			count={totalPages}
-			color="secondary"
 			className="pagination"
-			size="large"
 			page={page}
 			onChange={(evt, page) => handlePageChange(page)}
 		/>

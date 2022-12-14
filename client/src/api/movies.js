@@ -1,10 +1,16 @@
-import app from '../axiosConfig';
+import app from '../utils/axiosConfig';
 
 /** API Calls */
 
-const findAll = async () => {
+const findAll = async (page, sortedBy, sortedValue) => {
 	try {
-		return await app.get(`/movies/findAll`);
+		const findAllResponse = await app.get(
+			`/movies/findAll?page=${page}&sortedBy=${sortedBy}&sortedValue=${sortedValue}`
+		);
+		return {
+			movies: findAllResponse.data.movies,
+			totalMovies: findAllResponse.data.totalMovies,
+		};
 	} catch (error) {
 		console.log(error.message);
 	}

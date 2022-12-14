@@ -1,0 +1,15 @@
+.filterButton {
+    color: #1b9ac7 !important;
+    font-weight: bold !important;
+    font-size: 15px !important;
+}
+
+.filterButton:hover {
+    background: #1b9ac7!important;
+    color: #fff!important;
+}
+
+.filterMenuItem:hover {
+    background: #1b9ac7!important;
+    color: #fff!important;
+}

@@ -1,4 +1,4 @@
-import app from '../axiosConfig';
+import app from '../utils/axiosConfig';
 
 /** API Calls */
 
