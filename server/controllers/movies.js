@@ -7,6 +7,14 @@ const findAll = async (request, response) => {
     const sortedValue = request.query.sortedValue;
     let totalMovies = await Movie.count();
 
+    if (!sortedBy) {
+      return response.status(400).json({ message: "Missing params" });
+    }
+
+    if (sortedBy === "user" && sortedValue) {
+      return response.status(400).json({ message: "Missing params" });
+    }
+
     let movies;
     switch (sortedBy) {
       case "all":
@@ -49,6 +57,7 @@ const findAll = async (request, response) => {
       totalMovies: totalMovies,
     });
   } catch (error) {
+    console.log(error);
     response.status(500).json({ error: error.message });
   }
 };
@@ -56,6 +65,11 @@ const findAll = async (request, response) => {
 const addNewMovie = async (request, response) => {
   const movieInput = request.body;
   let wrongBody = false;
+
+  if (!movieInput) {
+    return response.status(400).json({ message: "Missing params" });
+  }
+
   try {
     const moviesData = await Movie.find();
     const duplicateFound = moviesData.find(
@@ -88,16 +102,34 @@ const addNewMovie = async (request, response) => {
   }
 };
 
+const deleteMovie = async (request, response) => {
+  try {
+    const movieId = request.params;
+    if (!movieId) {
+      return response.status(400).json({ message: "Missing params" });
+    }
+    const movieDeletion = await Movie.findOneAndDelete(request.params);
+    response.json(movieDeletion);
+  } catch (error) {
+    console.log(error);
+    response.status(404).json({ message: "User not found" });
+  }
+};
+
 const updateMovie = async (request, response) => {
   const movieId = request.params;
   const updateValue = request.body;
 
-  try {
-    if (Object.keys(updateValue).length === 0) {
-      response.status(400).json({ message: "Wrong body" });
-      return;
-    }
+  if (!movieId) {
+    return response.status(400).json({ message: "Missing params" });
+  }
 
+  if (Object.keys(updateValue).length === 0) {
+    response.status(400).json({ message: "Wrong body" });
+    return;
+  }
+
+  try {
     const updatedMovie = await Movie.findOneAndUpdate(movieId, updateValue, {
       new: true,
     });
@@ -112,4 +144,5 @@ module.exports = {
   findAll,
   addNewMovie,
   updateMovie,
+  deleteMovie,
 };

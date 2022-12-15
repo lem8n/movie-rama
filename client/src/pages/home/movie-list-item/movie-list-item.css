@@ -16,7 +16,9 @@
 }
 
 .card-buttons {
+    width: 100%;
     position: absolute;
+    justify-content: space-between;
     bottom: 0;
 }
 
@@ -44,4 +46,14 @@
 
 .activeDislikeButton {
     color: #a00000!important;
+}
+
+.deleteMovie {
+    color: #a00000 !important;
+    font-weight: bold!important;
+}
+
+.deleteMovie:hover {
+    background: #a00000!important;
+    color: #fff!important;
 }

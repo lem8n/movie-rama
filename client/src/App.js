@@ -24,7 +24,6 @@ const App = () => {
 	const [isNewMovie, setIsNewMovie] = useState(false);
 
 	useEffect(() => {
-		console.log(page);
 		findAll(page, sortedBy, sortedValue)
 			.then((result) => {
 				if (result) {
@@ -88,6 +87,8 @@ const App = () => {
 									setPage={setPage}
 									totalPages={totalPages}
 									setTotalPages={setTotalPages}
+									setIsNewMovie={setIsNewMovie}
+									totalMovieNumber={totalMovieNumber}
 								/>
 							}
 						></Route>

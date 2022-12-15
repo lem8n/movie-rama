@@ -1,16 +1,21 @@
 import './movie-list-item.css';
-import { Card, CardActions, CardContent, Typography } from '@mui/material';
+import {
+	Button,
+	Card,
+	CardActions,
+	CardContent,
+	Typography,
+} from '@mui/material';
 import { findById } from '../../../api/users';
 import { updateMovie } from '../../../api/movies';
 import { useState, useEffect } from 'react';
 import IconButton from '@mui/material/IconButton';
 import { ThumbUp, ThumbDown } from '@mui/icons-material';
+import { DeleteMovieModal } from './delete-movie-modal/delete-movie-modal';
 const moment = require('moment');
 
 export const MovieListItem = ({
 	fetchedMovies,
-	setFetchedMovies,
-	isLoading,
 	setIsLoading,
 	signedInUser,
 	isLoggedIn,
@@ -19,12 +24,16 @@ export const MovieListItem = ({
 	page,
 	setPage,
 	setSortedValue,
+	setIsNewMovie,
+	totalMovieNumber,
 }) => {
 	const [moviesList, setMoviesList] = useState([{}]);
 	const [likesPerMovie, setLikesPerMovie] = useState({});
 	const [hasUserLikeIt, setHasUserLikeIt] = useState({});
 	const [dislikesPerMovie, setDislikesPerMovie] = useState({});
 	const [hasUserDislikeIt, setHasUserDislikeIt] = useState({});
+	const [openDeleteModal, setOpenDeleteModal] = useState(false);
+	const [movieToDelete, setMovieToDelete] = useState('');
 	const calculateTimeAgoPosted = (movie, unitOfTime) => {
 		const timePast = moment().diff(movie.createdAt, unitOfTime);
 		if (timePast !== 0) {
@@ -198,57 +207,82 @@ export const MovieListItem = ({
 									>
 										{result.postedBy.fullName}
 									</span>
-									<span style={{ color: '#4d0505' }}>
-										{' ' + result.timeAgoPosted}
-									</span>
+									{result.timeAgoPosted !== undefined ? (
+										<span style={{ color: '#4d0505' }}>
+											{' ' + result.timeAgoPosted}
+										</span>
+									) : (
+										<span style={{ color: '#4d0505' }}>&nbsp;1 second ago</span>
+									)}
 								</Typography>
 								<Typography variant="body3" color="text.secondary">
 									{result.description}
 								</Typography>
 							</CardContent>
 							<CardActions className="card-buttons">
-								<IconButton
-									type="button"
-									className={
-										isLoggedIn
-											? hasUserLikeIt[result.title]
-												? 'activeLikeButton'
-												: 'likeButton'
-											: 'activeLikeButton'
-									}
-									onClick={() => handleLike(result)}
-									disabled={
-										!isLoggedIn || result.postedBy._id === signedInUser._id
-									}
-								>
-									<ThumbUp />
-								</IconButton>
-								<span className="likeDislikeCount">
-									{likesPerMovie[result.title]}
-								</span>
-								<IconButton
-									type="button"
-									className={
-										isLoggedIn
-											? hasUserDislikeIt[result.title]
-												? 'activeDislikeButton'
-												: 'dislikeButton'
-											: 'activeDislikeButton'
-									}
-									onClick={() => handleDislike(result)}
-									disabled={
-										!isLoggedIn || result.postedBy._id === signedInUser._id
-									}
-								>
-									<ThumbDown />
-								</IconButton>
-								<span className="likeDislikeCount">
-									{dislikesPerMovie[result.title]}
-								</span>
+								<div>
+									<IconButton
+										type="button"
+										className={
+											isLoggedIn
+												? hasUserLikeIt[result.title]
+													? 'activeLikeButton'
+													: 'likeButton'
+												: 'activeLikeButton'
+										}
+										onClick={() => handleLike(result)}
+										disabled={
+											!isLoggedIn || result.postedBy._id === signedInUser._id
+										}
+									>
+										<ThumbUp />
+									</IconButton>
+									<span className="likeDislikeCount">
+										{likesPerMovie[result.title]}
+									</span>
+									<IconButton
+										type="button"
+										className={
+											isLoggedIn
+												? hasUserDislikeIt[result.title]
+													? 'activeDislikeButton'
+													: 'dislikeButton'
+												: 'activeDislikeButton'
+										}
+										onClick={() => handleDislike(result)}
+										disabled={
+											!isLoggedIn || result.postedBy._id === signedInUser._id
+										}
+									>
+										<ThumbDown />
+									</IconButton>
+									<span className="likeDislikeCount">
+										{dislikesPerMovie[result.title]}
+									</span>
+								</div>
+								{result.postedBy._id === signedInUser._id && (
+									<Button
+										className="deleteMovie"
+										onClick={() => {
+											setMovieToDelete(result._id);
+											setOpenDeleteModal(true);
+										}}
+									>
+										Delete Movie
+									</Button>
+								)}
 							</CardActions>
 						</Card>
 					</div>
 				))}
+			<DeleteMovieModal
+				openDeleteModal={openDeleteModal}
+				setOpenDeleteModal={setOpenDeleteModal}
+				movieToDelete={movieToDelete}
+				setPage={setPage}
+				setIsNewMovie={setIsNewMovie}
+				totalMovieNumber={totalMovieNumber}
+			/>
 		</>
 	);
 };

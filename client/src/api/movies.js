@@ -24,4 +24,8 @@ const updateMovie = async (movieId, updatedValues) => {
 	return await app.put(`/movies/updateMovie/${movieId}`, updatedValues);
 };
 
-export { findAll, addNewMovie, updateMovie };
+const deleteMovie = async (movieId) => {
+	return await app.delete(`/movies/deleteMovie/${movieId}`);
+};
+
+export { findAll, addNewMovie, updateMovie, deleteMovie };

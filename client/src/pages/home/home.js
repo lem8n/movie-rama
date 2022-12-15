@@ -20,6 +20,8 @@ export const Home = ({
 	setPage,
 	totalPages,
 	setTotalPages,
+	setIsNewMovie,
+	totalMovieNumber,
 }) => {
 	const navigate = useNavigate();
 
@@ -67,6 +69,8 @@ export const Home = ({
 							setIsLoading={setIsLoading}
 							setSortedBy={setSortedBy}
 							setSortedValue={setSortedValue}
+							setIsNewMovie={setIsNewMovie}
+							totalMovieNumber={totalMovieNumber}
 						/>
 					</Stack>
 

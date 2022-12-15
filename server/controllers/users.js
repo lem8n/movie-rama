@@ -29,6 +29,10 @@ const signUp = async (request, response) => {
 };
 
 const findById = async (request, response) => {
+  if (!request.params) {
+    return response.status(400).json({ message: "Missing params" });
+  }
+
   try {
     const userFind = await User.findOne(request.params);
     response.json(userFind);
@@ -42,6 +46,11 @@ const logIn = async (request, response) => {
   let wrongBody = false;
   let userData;
   let token;
+
+  if (Object.keys(userInput).length === 0) {
+    return response.status(400).json({ message: "Missing body" });
+  }
+
   try {
     userData = await User.find();
   } catch (error) {

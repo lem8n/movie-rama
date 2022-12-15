@@ -1,0 +1,19 @@
+.yesButton {
+    color: #a00000 !important;
+    font-weight: bold!important;
+}
+
+.yesButton:hover {
+    background: #a00000!important;
+    color: #fff!important;
+}
+
+.noButton {
+    color: #1b9ac7!important;
+    font-weight: bold!important;
+}
+
+.noButton:hover {
+    background: #1b9ac7!important;
+    color: #fff!important;
+}
