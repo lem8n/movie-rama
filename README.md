@@ -4,7 +4,7 @@ A social sharing platform where users can share their favorite movies. Each movi
 1. After you clone the project for the App execution, open two terminals and follow the instruction bellow:
     - For the client
         - cd client
-        - npm install
+        - npm install (you may need --lagacy-peer-deps beacause a module I installed may be older version)
         - npm start
     - For the client
         - cd server
